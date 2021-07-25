@@ -14,7 +14,17 @@ namespace CEP
         {
             var client = new RestClient($"https://viacep.com.br/ws/{cep}/json/");
             var request = new RestRequest(Method.GET);
-            return await client.GetAsync<T>(request);
+
+            var response = await client.ExecuteGetAsync<T>(request);
+
+            if (!response.IsSuccessful) 
+            {
+                // Poderia logar sempre que o serviço via CEP reponder com 500 para sinalizar que o mesmo está fora
+                
+                return null;    
+            }
+
+            return response.Data;
         }
     }
 }

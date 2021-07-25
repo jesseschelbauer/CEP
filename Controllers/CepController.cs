@@ -25,6 +25,9 @@ namespace CEP.Controllers
 
             var cepModel = await this._cepService.GetAsync(cep);
 
+            if (cepModel == null)
+                return new { Erro = "Bad request" };
+
             return !string.IsNullOrEmpty(cepModel.Cep) ? cepModel :  Task.FromResult<object>(new { Erro = "Não encontrado" }).Result; ;
         }
     }
